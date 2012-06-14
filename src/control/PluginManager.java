@@ -12,9 +12,9 @@ import data.Plugin;
 
 public class PluginManager {
 	
-	ArrayList<Plugin> loadedPlugins;
+	static ArrayList<Plugin> loadedPlugins;
 	
-	ArrayList<Plugin> availablePlugins;
+	static ArrayList<Plugin> availablePlugins;
 	
 	private final String PLUGINDIR = "plugins";
 	
@@ -74,9 +74,12 @@ public class PluginManager {
 		}
 	}
 	
-	public void loadPlugin(Plugin p) {
+	public static void loadPlugin(Plugin p) {
 		
-		p.run();
+		//if(Resource.availablePlugins.contains((Object)p))
+			p.run();
+		//else
+			//System.out.println("no");
 		
 		if(!loadedPlugins.contains(p))
 			loadedPlugins.add(p);
@@ -90,6 +93,44 @@ public class PluginManager {
 	
 	public void unloadPlugin(Plugin p) {
 		
+	}
+	
+	public static Plugin getPlugin(File f) {
+		
+		URL[] u = new URL[1];
+		if(f.exists()) {
+			if(f.getName().endsWith(".jar")) {
+				try {
+					u[0] = f.toURI().toURL();
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				URLClassLoader loader = new URLClassLoader(u);
+				try {
+					
+					String classtoload = "AppsPlugin";
+					Class loadedClass = loader.loadClass(classtoload);
+					
+					try {
+						Plugin p = (Plugin)loadedClass.newInstance();
+						return p;
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					System.out.println("available: " + f.getName());
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}
+		return null;
 	}
 	
 }
