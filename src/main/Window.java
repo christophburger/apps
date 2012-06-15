@@ -1,5 +1,7 @@
 package main;
 
+import gui.PluginManagerWindow;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -15,8 +17,6 @@ import control.PluginManager;
 import data.MyMenuItem;
 import data.Plugin;
 
-import resource.Resource;
-
 public class Window extends JFrame {
 	
 	private JMenuBar bar = new JMenuBar();
@@ -30,7 +30,7 @@ public class Window extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			JFileChooser chooser = new JFileChooser();
+			/*JFileChooser chooser = new JFileChooser();
 			
 			if(chooser.showOpenDialog(Window.this) == JFileChooser.APPROVE_OPTION) {
 				
@@ -38,23 +38,33 @@ public class Window extends JFrame {
 				
 				Plugin p = PluginManager.getPlugin(f);
 				
-				PluginManager.loadPlugin(p);
 				
-			}
+				PluginManager.addPlugin(p);
+				
+			}*/
+			
+			new PluginManagerWindow();
 			
 		}
 	};
 
 	public Window() {
 		
-		System.out.println("available Plugins: " + Resource.availablePlugins.toString());
+		init();
 		
-		for(int i = 0; i < Resource.availablePlugins.size(); i++) {
-			MyMenuItem item = new MyMenuItem(Resource.availablePlugins.get(i));
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		pack();
+		setVisible(true);
+	}
+	
+	private void init() {
+		for(Plugin p : PluginManager.availablePlugins.values()) {
+			MyMenuItem item = new MyMenuItem(p);
 			open.add(item);
 		}
 		
-		installPlugin = new JMenuItem("Plugin installieren");
+		installPlugin = new JMenuItem("Plug-Ins verwalten");
 		installPlugin.addActionListener(install);
 		
 		plugins.add(installPlugin);
@@ -63,11 +73,6 @@ public class Window extends JFrame {
 		bar.add(plugins);
 		
 		setJMenuBar(bar);
-		
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		pack();
-		setVisible(true);
 	}
 	
 }

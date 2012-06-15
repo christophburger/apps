@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import resource.Resource;
 
@@ -12,20 +13,20 @@ import data.Plugin;
 
 public class PluginManager {
 	
-	static ArrayList<Plugin> loadedPlugins;
+	public static HashMap<String, Plugin> loadedPlugins;
 	
-	static ArrayList<Plugin> availablePlugins;
+	public static HashMap<String, Plugin> availablePlugins;
 	
 	private final String PLUGINDIR = "plugins";
 	
 	public PluginManager() {
 		
-		loadedPlugins = new ArrayList<Plugin>();
-		availablePlugins = new ArrayList<Plugin>();
+		loadedPlugins = new HashMap<String, Plugin>();
+		availablePlugins = new HashMap<String, Plugin>();
 		
 		getAvailablePlugins();
 		
-		Resource.availablePlugins = availablePlugins;
+		//Resource.availablePlugins = availablePlugins;
 		
 		System.out.println("av: " + availablePlugins);
 		
@@ -54,7 +55,7 @@ public class PluginManager {
 							
 							try {
 								Plugin p = (Plugin)loadedClass.newInstance();
-								availablePlugins.add(p);
+								availablePlugins.put(p.getPluginName(), p);
 							} catch (InstantiationException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -74,20 +75,50 @@ public class PluginManager {
 		}
 	}
 	
-	public static void loadPlugin(Plugin p) {
+	public static void addPlugin(Plugin p) {
+		
+		if(!availablePlugins.containsValue(p))
+			availablePlugins.put(p.getPluginName(), p);
+		
+		System.out.println("Plugin " + p.getPluginName() + " added");
 		
 		//if(Resource.availablePlugins.contains((Object)p))
-			p.run();
+			//p.run();
 		//else
 			//System.out.println("no");
 		
-		if(!loadedPlugins.contains(p))
+		/*if(!loadedPlugins.contains(p))
 			loadedPlugins.add(p);
 		else
 			System.out.println("Plugin already loaded!");
 		
 		if(availablePlugins.contains(p))
-			availablePlugins.remove(p);
+			availablePlugins.remove(p);*/
+		
+	}
+	
+	public static void loadPlugin(String name) {
+		if(availablePlugins.containsKey(name)) {
+			Plugin p = (Plugin)availablePlugins.get(name);
+			p.run();
+			if(!loadedPlugins.containsKey(name))
+				loadedPlugins.put(name, p);
+			
+			availablePlugins.remove(name);
+		}
+			
+		//if(Resource.availablePlugins.contains((Object)p))
+			//p.run();
+		//else
+			//System.out.println("no");
+		
+		/*if(!loadedPlugins.contains(p))
+			loadedPlugins.add(p);
+		else
+			System.out.println("Plugin already loaded!");
+		
+		if(availablePlugins.contains(p))
+			availablePlugins.remove(p);*/
 		
 	}
 	
