@@ -67,6 +67,8 @@ public class Window extends JFrame {
 		installPlugin = new JMenuItem("Plug-Ins verwalten");
 		installPlugin.addActionListener(install);
 		
+		setTitle("Tool");
+		
 		plugins.add(installPlugin);
 		
 		bar.add(open);
