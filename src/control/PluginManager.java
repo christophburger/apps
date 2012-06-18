@@ -137,7 +137,11 @@ public class PluginManager {
 	}
 	
 	public static void unloadPlugin(String p) {
-		
+		if(loadedPlugins.containsKey(p)) {
+			Plugin plugin = loadedPlugins.get(p);
+			plugin.stop();
+			loadedPlugins.remove(p);
+		}
 	}
 	
 	public static Plugin getPlugin(File f) throws ClassNotFoundException {
