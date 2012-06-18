@@ -4,17 +4,11 @@ public abstract class Plugin {
 	
 	private Boolean active = false;
 	
-	public void run() {
-		
-	}
+	public abstract void run();
 	
-	public String getPluginName() {
-		return null;
-	}
+	public abstract String getPluginName();
 	
-	public String getAuthor() {
-		return null;
-	}
+	public abstract String getAuthor();
 	
 	public Boolean getActive() {
 		return active;
@@ -23,4 +17,7 @@ public abstract class Plugin {
 	public void setActive(Boolean t) {
 		active = t;
 	}
+	
+	public abstract void stop();
+	
 }
