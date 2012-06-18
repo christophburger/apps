@@ -16,16 +16,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import control.PluginManager;
 import data.MyTableModel;
-import data.MyTableModelListener;
 import data.Plugin;
 
 public class PluginManagerWindow extends JFrame {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3310644391744712449L;
 	
 	JMenuBar bar = new JMenuBar();
 	JMenu file = new JMenu("Datei");
@@ -71,8 +73,6 @@ public class PluginManagerWindow extends JFrame {
 				String p = (String)target.getValueAt(row, 0);
 				Plugin plugin = PluginManager.getPlugin(p);
 				System.out.println("plugin: " + plugin.getPluginName());
-				String[] items = {"Aktiviert", "Deaktiviert"};
-				JComboBox box = new JComboBox(items);
 				if(target.getSelectedColumn() < 2) {
 					new PluginInfo(plugin);
 				} else {

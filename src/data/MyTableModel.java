@@ -1,8 +1,6 @@
 package data;
 
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 
 import control.PluginManager;
